@@ -1,5 +1,8 @@
 import dayjs from "dayjs";
 
+import { newSchedule } from "../../services/new-schedule.js";
+import { scheduleLoad } from "../schedules/load.js";
+
 const form = document.querySelector("form");
 const customerName = document.querySelector("#customer");
 const selectedDate = document.querySelector("#date");
@@ -10,7 +13,7 @@ selectedDate.value = today;
 selectedDate.min = today;
 
 
-form.onsubmit = (event) => {
+form.onsubmit = async (event) => {
   event.preventDefault();
 
   try {
@@ -30,11 +33,14 @@ form.onsubmit = (event) => {
     const when = dayjs(`${selectedDate.value} ${hour}`, "YYYY-MM-DD h:mma");
     const id = new Date().getTime();
 
-    console.log({
+    await newSchedule({
       id,
       name,
       when: when.format(),
     })
+
+    await scheduleLoad();
+    customerName.value = "";
 
   } catch (error) {
     alert("An error occurred while submitting the form. Please try again.");

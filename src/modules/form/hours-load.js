@@ -5,17 +5,25 @@ import { hoursClick } from "./hours-click.js";
 
 const hours = document.querySelector("#hours");
 
-export function hoursLoad({date}) {
+export function hoursLoad({date, dailySchedule}) {
 
   hours.innerHTML = "";
+
+  const booked = dailySchedule.map((schedule) => {
+    return dayjs(schedule.when).format("HH:mm");
+  });
+
+
   const opening = openingHours.map((hour) => {
     const [scheduleHour] = hour.split(":");
 
-    const isHourPassed = dayjs(date).add(scheduleHour, "hour").isAfter(dayjs());
+    const isHourPassed = dayjs(date).add(scheduleHour, "hour").isBefore(dayjs());
+
+    const available = !booked.includes(hour) && !isHourPassed;
 
     return {
       hour,
-      available: isHourPassed,
+      available,
     };
   });
 
@@ -30,7 +38,7 @@ export function hoursLoad({date}) {
 
     if (hour === "9:00") {
       hourHeaderAdd("Morning");
-    } else if (hour === "13:00") {
+    } else if (hour === "12:00") {
       hourHeaderAdd("Afternoon");
     } else if (hour === "19:00") {
       hourHeaderAdd("Evening");
