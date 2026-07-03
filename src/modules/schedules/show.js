@@ -25,6 +25,7 @@ export async function showSchedule({ dailySchedule }) {
       const cancelIcon = document.createElement("img");
       cancelIcon.src = "./src/assets/cancel.svg";
       cancelIcon.alt = "Cancel";
+      cancelIcon.classList.add("cancel-icon");
 
       item.append(time, name, cancelIcon);
 
