@@ -25,7 +25,6 @@ export function hoursLoad({date, dailySchedule}) {
       hour,
       available,
     };
-    
   });
 
   opening.forEach(({hour, available}) => {
